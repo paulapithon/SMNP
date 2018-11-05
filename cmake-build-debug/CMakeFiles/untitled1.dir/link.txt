@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/untitled1.dir/Teste/SNMPSession.cpp.o CMakeFiles/untitled1.dir/Socket/ClientSocket.cpp.o CMakeFiles/untitled1.dir/Socket/ServerSocket.cpp.o CMakeFiles/untitled1.dir/Socket/Socket.cpp.o CMakeFiles/untitled1.dir/main.cpp.o  -o untitled1 -lsnmp++ 
