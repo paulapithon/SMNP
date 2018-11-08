@@ -31,26 +31,12 @@ const std::string DatagramSocket::getMessage()
     char buffer[500];
     memset(&(this->cliaddr), 0, sizeof(this->cliaddr));
 
+    printf("Hey\n");
 
-    fd_set set;
-    struct timeval timeout;
-    FD_ZERO(&set); /* clear the set */
-    FD_SET(this->handler, &set); /* add our file descriptor to the set */
-    timeout.tv_sec = 120;
-    timeout.tv_usec = 0;
-    int rv;
-    do {
-        rv = select(this->handler, &set, NULL, NULL, &timeout);
-        printf("%d\n",rv);
-        if (rv >= 0) {
-            break;
-        } else {
-            n = recvfrom(this->handler, buffer, 500,
-                         MSG_WAITALL, (struct sockaddr *) &(this->cliaddr),
-                         &len);
-        }
-        printf("%d\n",n);
-    }while(n < 0);
+    n = recvfrom(this->handler, buffer, 500,
+                 MSG_WAITALL, (struct sockaddr *) &(this->cliaddr),
+                 &len);
+    printf("Hey\n");
     if(n >= 0)
     {
         buffer[n] = '\0';
@@ -66,7 +52,6 @@ const std::string DatagramSocket::getMessage()
 
 void DatagramSocket::sendMessage(const std::string& message)
 {
-    printf("%d, %s12\n",this->handler,message.c_str());
     sendto(this->handler, message.c_str(), message.length(),
            MSG_CONFIRM, (const struct sockaddr *) &(this->cliaddr),
            len);

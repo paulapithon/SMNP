@@ -105,6 +105,7 @@ std::string SNMP::decode(const SNMPMessageName::SNMPMessage& snmpMessage) const 
     return teste;
 }
 void wait(DatagramSocket* ds, SNMP* thisObj){
+    printf("Hey");
     DataSocketMutex.lock();
     DatagramSocket* acutalSocket = ds;
     DataSocketMutex.unlock();
@@ -119,8 +120,14 @@ void SNMP::sendAndWait(const std::string& ip, int port, const std::string& messa
     DataSocketMutex.unlock();
 
     this->ds->sendMessage(message);
-    std::thread waiting(wait,this->ds,this);
-    waiting.join();
+//    std::thread waiting(wait,this->ds,this);
+//    waiting.join();
+
+    DataSocketMutex.lock();
+    DatagramSocket* acutalSocket = ds;
+    DataSocketMutex.unlock();
+    this->addElem(acutalSocket->getMessage());
+    delete acutalSocket;
 }
 
 
@@ -148,7 +155,7 @@ int main(){
     SNMP s;
     SNMPMessageName::SNMPMessage mes;
     mes.community = "public";
-    mes.targetIp = "127.0.0.1";
+    mes.targetIp = "192.168.15.7";
     mes.targetPort = "9002";
 	for(int i = 0; i < 17;i++)
 	{
