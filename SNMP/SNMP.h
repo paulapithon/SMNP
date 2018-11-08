@@ -7,13 +7,19 @@
 
 
 #include <vector>
+#include <string>
 #include "SMNPMessage.h"
+#include "../Socket/DatagramSocket.h"
 
 class SNMP {
 private:
-    std::vector<SNMPMessageName::SNMPMessage> snmpMessageHistroy;
+    DatagramSocket* ds;
+    std::vector<SNMPMessageName::SNMPMessage> snmpMessageHistory;
+    std::vector<std::string> snmpAnswerHistory;
 public:
-    void decode(SNMPMessageName::SNMPMessage snmpMessage);
+    std::string decode(const SNMPMessageName::SNMPMessage& snmpMessage) const;
+    void sendAndWait(const std::string& ip, int port, const std::string& message);
+    void addElem(const std::string& message);
 };
 
 

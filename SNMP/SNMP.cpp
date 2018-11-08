@@ -7,6 +7,9 @@
 #include <cmath>
 #include <cstring>
 #include "../Utils/StringUtils.h"
+#include <thread>
+#include <mutex>
+#include <ctime>
 
 #define OID_VALUE "2b"
 #define VAR_BIND_TYPE "30"
@@ -16,6 +19,8 @@
 #define ERROR_INDEX "020100"
 #define ERROR "020100"
 #define REQUEST_ID "020101"
+
+std::mutex DataSocketMutex;
 
 std::string getStringComplexOIDPart(const unsigned int pValue) {
     std::string result;
@@ -28,13 +33,12 @@ std::string getStringComplexOIDPart(const unsigned int pValue) {
         value = value >> 7;
         count++;
     }
-    printf("%d\n",value);
 
     unsigned int rest = pValue;
 
     for (int j = count - 1; j > 0; j--) {
-        integerPart = (rest >> 128);
-        rest -= integerPart << 128, j;
+        integerPart = (rest >> 7);
+        rest -= integerPart << 7, j;
         addInteger(result,integerPart + 128);
     }
 
@@ -43,7 +47,11 @@ std::string getStringComplexOIDPart(const unsigned int pValue) {
     return result;
 }
 
-void SNMP::decode(SNMPMessageName::SNMPMessage snmpMessage){
+void SNMP::addElem(const std::string& message){
+    std::string in(message.c_str());
+    this->snmpAnswerHistory.push_back(in);
+}
+std::string SNMP::decode(const SNMPMessageName::SNMPMessage& snmpMessage) const {
     std::string result = "";
     size_t oidLength;
     std::string oidType;
@@ -94,17 +102,60 @@ void SNMP::decode(SNMPMessageName::SNMPMessage snmpMessage){
     sprintf(message, "30%s%s%s%s",addLeadingZeros( 3 + (strlen(community) / 2) + (strlen(PDU) / 2) ).c_str(),
             version,community, PDU);
     std::string teste(message);
-    printf("302902010004067075626c6963a02f0201010201000201003011300f060b2b030601020102020101010500 \n%s , %d ",message,teste.compare("302902010004067075626c6963a02f0201010201000201003011300f060b2b030601020102020101010500"));
+    return teste;
 }
+void wait(DatagramSocket* ds, SNMP* thisObj){
+    DataSocketMutex.lock();
+    DatagramSocket* acutalSocket = ds;
+    DataSocketMutex.unlock();
+    thisObj->addElem(acutalSocket->getMessage());
+    delete acutalSocket;
+}
+
+
+void SNMP::sendAndWait(const std::string& ip, int port, const std::string& message){
+    DataSocketMutex.lock();
+    this->ds = new DatagramSocket(ip, port);
+    DataSocketMutex.unlock();
+
+    this->ds->sendMessage(message);
+    std::thread waiting(wait,this->ds,this);
+    waiting.join();
+}
+
+
+
 int main(){
+	const char* teste[] = {"1.3.6.1.4.1.12619.1.1.1",
+						   "1.3.6.1.4.1.12619.1.1.2",
+						   "1.3.6.1.4.1.12619.1.1.3",
+						   "1.3.6.1.4.1.12619.1.2.1",
+						   "1.3.6.1.4.1.12619.1.2.2",
+						   "1.3.6.1.4.1.12619.1.2.2.1",
+						   "1.3.6.1.4.1.12619.1.2.2.1.1",
+						   "1.3.6.1.4.1.12619.1.2.2.1.2",
+						   "1.3.6.1.4.1.12619.1.2.2.1.3",
+						   "1.3.6.1.4.1.12619.1.2.2.1.4",
+						   "1.3.6.1.4.1.12619.1.3.1",
+						   "1.3.6.1.4.1.12619.1.3.2",
+						   "1.3.6.1.4.1.12619.1.3.3",
+						   "1.3.6.1.4.1.12619.1.3.4",
+						   "1.3.6.1.4.1.12619.1.3.5",
+						   "1.3.6.1.4.1.12619.1.3.6",
+						   "1.3.6.1.4.1.12619.1.4.1"}; 
     int count = 0;
     int value = 128 * 128;
     SNMP s;
     SNMPMessageName::SNMPMessage mes;
-    mes.objectId = ".1.3.6.1.2.1.2.2.1.1.1";
     mes.community = "public";
     mes.targetIp = "127.0.0.1";
-    mes.targetPort = "8080";
+    mes.targetPort = "9002";
+	for(int i = 0; i < 17;i++)
+	{
+		mes.objectId = teste[i];//".1.3.6.1.2.1.2.2.1.1.1";
 
-    s.decode(mes);
+		std::string messfae = s.decode(mes);
+		printf("%s\n",messfae.c_str());
+        s.sendAndWait(mes.targetIp, 9002, messfae);
+	}
 }

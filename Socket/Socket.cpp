@@ -9,8 +9,8 @@
 
 #define MESSAGE_SIZE 1024
 
-Socket::Socket(const std::string& ip, const short port):ip_(ip),port_(port) {
-    this->handler = socket(AF_INET, SOCK_STREAM, 0);
+Socket::Socket(const std::string& ip, const short port , int type ):ip_(ip),port_(port) {
+    this->handler = socket(AF_INET,type, 0);
 }
 
 const std::string Socket::getMessage(int socket)

@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/client.dir/SNMP/SNMP.cpp.o CMakeFiles/client.dir/Socket/ClientSocket.cpp.o CMakeFiles/client.dir/Socket/DatagramSocket.cpp.o CMakeFiles/client.dir/Socket/ServerSocket.cpp.o CMakeFiles/client.dir/Socket/Socket.cpp.o CMakeFiles/client.dir/Utils/StringUtils.cpp.o  -o client -lpthread 

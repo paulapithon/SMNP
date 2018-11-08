@@ -16,7 +16,7 @@ protected:
     const short port_;
     struct sockaddr_in address;
 public:
-    Socket(const std::string& ip,const short port);
+    Socket(const std::string& ip,const short port, int type = SOCK_STREAM);
     const std::string getMessage(int socket);
     void sendMessage(const std::string& message,int socket);
 };
