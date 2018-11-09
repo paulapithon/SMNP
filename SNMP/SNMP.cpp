@@ -101,11 +101,33 @@ std::string SNMP::decode(const SNMPMessageName::SNMPMessage& snmpMessage) const 
      // Message
     sprintf(message, "30%s%s%s%s",addLeadingZeros( 3 + (strlen(community) / 2) + (strlen(PDU) / 2) ).c_str(),
             version,community, PDU);
-    std::string teste(message);
-    return teste;
+    std::string rValue(message);
+    return rValue;
+}
+std::string SNMP::encode(const std::string& snmpMessage) const {
+    std::string rValue;
+    char number;
+    char value;
+    for (int i = 0; i < snmpMessage.size(); i+=2) {
+        value = 0;
+        number = snmpMessage.at(i);
+        if(number >= '0' && number <  '9')
+            number -= '0';
+        else
+            number -= 'a';
+        value += number*16;
+        printf("%d \n",value);
+        number = snmpMessage.at(i+1);
+        if(number >= '0' && number <  '9'){
+            number -= '0';
+        }else
+            number -= 'a';
+        value += number;
+        printf("%d %c",value,value);
+    }
+    return rValue;
 }
 void wait(DatagramSocket* ds, SNMP* thisObj){
-    printf("Hey");
     DataSocketMutex.lock();
     DatagramSocket* acutalSocket = ds;
     DataSocketMutex.unlock();
@@ -120,49 +142,29 @@ void SNMP::sendAndWait(const std::string& ip, int port, const std::string& messa
     DataSocketMutex.unlock();
 
     this->ds->sendMessage(message);
-//    std::thread waiting(wait,this->ds,this);
-//    waiting.join();
+    wait(this->ds,this);
 
-    DataSocketMutex.lock();
-    DatagramSocket* acutalSocket = ds;
-    DataSocketMutex.unlock();
-    this->addElem(acutalSocket->getMessage());
-    delete acutalSocket;
 }
 
 
-
 int main(){
-	const char* teste[] = {"1.3.6.1.4.1.12619.1.1.1",
-						   "1.3.6.1.4.1.12619.1.1.2",
-						   "1.3.6.1.4.1.12619.1.1.3",
-						   "1.3.6.1.4.1.12619.1.2.1",
-						   "1.3.6.1.4.1.12619.1.2.2",
-						   "1.3.6.1.4.1.12619.1.2.2.1",
-						   "1.3.6.1.4.1.12619.1.2.2.1.1",
-						   "1.3.6.1.4.1.12619.1.2.2.1.2",
-						   "1.3.6.1.4.1.12619.1.2.2.1.3",
-						   "1.3.6.1.4.1.12619.1.2.2.1.4",
-						   "1.3.6.1.4.1.12619.1.3.1",
-						   "1.3.6.1.4.1.12619.1.3.2",
-						   "1.3.6.1.4.1.12619.1.3.3",
-						   "1.3.6.1.4.1.12619.1.3.4",
-						   "1.3.6.1.4.1.12619.1.3.5",
-						   "1.3.6.1.4.1.12619.1.3.6",
-						   "1.3.6.1.4.1.12619.1.4.1"}; 
+	const char* teste[] = {"1.3.6.1.4.1.12619.1.1.1"};
     int count = 0;
     int value = 128 * 128;
     SNMP s;
     SNMPMessageName::SNMPMessage mes;
     mes.community = "public";
-    mes.targetIp = "192.168.15.7";
+    mes.targetIp = "127.0.0.1";
     mes.targetPort = "9002";
+
+
 	for(int i = 0; i < 17;i++)
 	{
 		mes.objectId = teste[i];//".1.3.6.1.2.1.2.2.1.1.1";
 
 		std::string messfae = s.decode(mes);
-		printf("%s\n",messfae.c_str());
+        printf("%s\n",messfae.c_str());
+        printf("%s\n",s.encode(messfae).c_str());
         s.sendAndWait(mes.targetIp, 9002, messfae);
 	}
 }

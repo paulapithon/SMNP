@@ -1,0 +1,3 @@
+/mnt/c/Users/Pichau/Documents/git/smnptest/build/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/Pichau/Documents/git/smnptest/build/CMakeFiles/Client.dir
+/mnt/c/Users/Pichau/Documents/git/smnptest/build/CMakeFiles/edit_cache.dir

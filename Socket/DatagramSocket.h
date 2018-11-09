@@ -16,7 +16,7 @@ private:
     int acceptedSocket;
     void initialize();
 public:
-    DatagramSocket(const std::string& ip,int port);
+    DatagramSocket(const std::string& ip,int port,bool server = true);
 
     const std::string getMessage();
     void sendMessage(const std::string& message);

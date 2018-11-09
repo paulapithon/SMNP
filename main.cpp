@@ -16,7 +16,7 @@ int client() {
     printf("%s\n",s.getMessage().c_str());
     return 0;
 }
-int main() {
+int main1() {
 #ifdef Client
     return client();
 #else
