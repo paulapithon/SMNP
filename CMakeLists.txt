@@ -20,4 +20,4 @@ add_library(${PROJECT_NAME} SHARED ${FILES})
 target_link_libraries(${PROJECT_NAME} ${JAVA_JVM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
 install(TARGETS ${PROJECT_NAME}
         LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib/static)
+        ARCHIVE DESTINATION lib/static) 
