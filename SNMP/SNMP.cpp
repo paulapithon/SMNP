@@ -7,10 +7,7 @@
 #include <cmath>
 #include <cstring>
 #include "../Utils/StringUtils.h"
-#include <thread>
 #include <mutex>
-#include <ctime>
-#include <regex>
 
 #define OID_VALUE "2b"
 #define VAR_BIND_TYPE "30"
@@ -156,22 +153,5 @@ std::string SNMP::sendAndWait(const std::string& ip, int port, const std::string
 
 
 int main(){
-	int count = 0;
-    int value = 128 * 128;
-    SNMP s;
-    SNMPMessageName::SNMPMessage mes;
-    mes.community = "public";
-    mes.targetIp = "192.168.15.5";
-    mes.targetPort = "161";
-	mes.objectId = ".1.3.6.1.2.1.1.1.0";
 
-	std::string messfae = s.decode(mes);
-    // printf("%s\n",messfae.c_str());
-    //printf("%s\n",s.encode(messfae).c_str());
-    std::string test = s.sendAndWait(mes.targetIp, 161, s.encode(messfae));
-	
-    std::regex reg("[^\\w\\d\\s!-/\\:;]+");
-    test = regex_replace(test, reg, "");
-	printf("%s\n",test.c_str());
-	return 0;
 }

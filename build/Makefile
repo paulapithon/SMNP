@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Client
+# Target rules for targets named SNMPClient
 
 # Build rule for target.
-Client: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Client
-.PHONY : Client
+SNMPClient: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 SNMPClient
+.PHONY : SNMPClient
 
 # fast build rule for target.
-Client/fast:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/build
-.PHONY : Client/fast
+SNMPClient/fast:
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/build
+.PHONY : SNMPClient/fast
 
 SNMP/SNMP.o: SNMP/SNMP.cpp.o
 
@@ -129,7 +129,7 @@ SNMP/SNMP.o: SNMP/SNMP.cpp.o
 
 # target to build an object file
 SNMP/SNMP.cpp.o:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/SNMP/SNMP.cpp.o
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/SNMP/SNMP.cpp.o
 .PHONY : SNMP/SNMP.cpp.o
 
 SNMP/SNMP.i: SNMP/SNMP.cpp.i
@@ -138,7 +138,7 @@ SNMP/SNMP.i: SNMP/SNMP.cpp.i
 
 # target to preprocess a source file
 SNMP/SNMP.cpp.i:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/SNMP/SNMP.cpp.i
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/SNMP/SNMP.cpp.i
 .PHONY : SNMP/SNMP.cpp.i
 
 SNMP/SNMP.s: SNMP/SNMP.cpp.s
@@ -147,7 +147,7 @@ SNMP/SNMP.s: SNMP/SNMP.cpp.s
 
 # target to generate assembly for a file
 SNMP/SNMP.cpp.s:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/SNMP/SNMP.cpp.s
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/SNMP/SNMP.cpp.s
 .PHONY : SNMP/SNMP.cpp.s
 
 Socket/ClientSocket.o: Socket/ClientSocket.cpp.o
@@ -156,7 +156,7 @@ Socket/ClientSocket.o: Socket/ClientSocket.cpp.o
 
 # target to build an object file
 Socket/ClientSocket.cpp.o:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/ClientSocket.cpp.o
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/ClientSocket.cpp.o
 .PHONY : Socket/ClientSocket.cpp.o
 
 Socket/ClientSocket.i: Socket/ClientSocket.cpp.i
@@ -165,7 +165,7 @@ Socket/ClientSocket.i: Socket/ClientSocket.cpp.i
 
 # target to preprocess a source file
 Socket/ClientSocket.cpp.i:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/ClientSocket.cpp.i
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/ClientSocket.cpp.i
 .PHONY : Socket/ClientSocket.cpp.i
 
 Socket/ClientSocket.s: Socket/ClientSocket.cpp.s
@@ -174,7 +174,7 @@ Socket/ClientSocket.s: Socket/ClientSocket.cpp.s
 
 # target to generate assembly for a file
 Socket/ClientSocket.cpp.s:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/ClientSocket.cpp.s
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/ClientSocket.cpp.s
 .PHONY : Socket/ClientSocket.cpp.s
 
 Socket/DatagramSocket.o: Socket/DatagramSocket.cpp.o
@@ -183,7 +183,7 @@ Socket/DatagramSocket.o: Socket/DatagramSocket.cpp.o
 
 # target to build an object file
 Socket/DatagramSocket.cpp.o:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/DatagramSocket.cpp.o
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/DatagramSocket.cpp.o
 .PHONY : Socket/DatagramSocket.cpp.o
 
 Socket/DatagramSocket.i: Socket/DatagramSocket.cpp.i
@@ -192,7 +192,7 @@ Socket/DatagramSocket.i: Socket/DatagramSocket.cpp.i
 
 # target to preprocess a source file
 Socket/DatagramSocket.cpp.i:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/DatagramSocket.cpp.i
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/DatagramSocket.cpp.i
 .PHONY : Socket/DatagramSocket.cpp.i
 
 Socket/DatagramSocket.s: Socket/DatagramSocket.cpp.s
@@ -201,7 +201,7 @@ Socket/DatagramSocket.s: Socket/DatagramSocket.cpp.s
 
 # target to generate assembly for a file
 Socket/DatagramSocket.cpp.s:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/DatagramSocket.cpp.s
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/DatagramSocket.cpp.s
 .PHONY : Socket/DatagramSocket.cpp.s
 
 Socket/ServerSocket.o: Socket/ServerSocket.cpp.o
@@ -210,7 +210,7 @@ Socket/ServerSocket.o: Socket/ServerSocket.cpp.o
 
 # target to build an object file
 Socket/ServerSocket.cpp.o:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/ServerSocket.cpp.o
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/ServerSocket.cpp.o
 .PHONY : Socket/ServerSocket.cpp.o
 
 Socket/ServerSocket.i: Socket/ServerSocket.cpp.i
@@ -219,7 +219,7 @@ Socket/ServerSocket.i: Socket/ServerSocket.cpp.i
 
 # target to preprocess a source file
 Socket/ServerSocket.cpp.i:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/ServerSocket.cpp.i
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/ServerSocket.cpp.i
 .PHONY : Socket/ServerSocket.cpp.i
 
 Socket/ServerSocket.s: Socket/ServerSocket.cpp.s
@@ -228,7 +228,7 @@ Socket/ServerSocket.s: Socket/ServerSocket.cpp.s
 
 # target to generate assembly for a file
 Socket/ServerSocket.cpp.s:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/ServerSocket.cpp.s
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/ServerSocket.cpp.s
 .PHONY : Socket/ServerSocket.cpp.s
 
 Socket/Socket.o: Socket/Socket.cpp.o
@@ -237,7 +237,7 @@ Socket/Socket.o: Socket/Socket.cpp.o
 
 # target to build an object file
 Socket/Socket.cpp.o:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/Socket.cpp.o
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/Socket.cpp.o
 .PHONY : Socket/Socket.cpp.o
 
 Socket/Socket.i: Socket/Socket.cpp.i
@@ -246,7 +246,7 @@ Socket/Socket.i: Socket/Socket.cpp.i
 
 # target to preprocess a source file
 Socket/Socket.cpp.i:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/Socket.cpp.i
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/Socket.cpp.i
 .PHONY : Socket/Socket.cpp.i
 
 Socket/Socket.s: Socket/Socket.cpp.s
@@ -255,8 +255,35 @@ Socket/Socket.s: Socket/Socket.cpp.s
 
 # target to generate assembly for a file
 Socket/Socket.cpp.s:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Socket/Socket.cpp.s
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Socket/Socket.cpp.s
 .PHONY : Socket/Socket.cpp.s
+
+Utils/SNMPMessager.o: Utils/SNMPMessager.cpp.o
+
+.PHONY : Utils/SNMPMessager.o
+
+# target to build an object file
+Utils/SNMPMessager.cpp.o:
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Utils/SNMPMessager.cpp.o
+.PHONY : Utils/SNMPMessager.cpp.o
+
+Utils/SNMPMessager.i: Utils/SNMPMessager.cpp.i
+
+.PHONY : Utils/SNMPMessager.i
+
+# target to preprocess a source file
+Utils/SNMPMessager.cpp.i:
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Utils/SNMPMessager.cpp.i
+.PHONY : Utils/SNMPMessager.cpp.i
+
+Utils/SNMPMessager.s: Utils/SNMPMessager.cpp.s
+
+.PHONY : Utils/SNMPMessager.s
+
+# target to generate assembly for a file
+Utils/SNMPMessager.cpp.s:
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Utils/SNMPMessager.cpp.s
+.PHONY : Utils/SNMPMessager.cpp.s
 
 Utils/StringUtils.o: Utils/StringUtils.cpp.o
 
@@ -264,7 +291,7 @@ Utils/StringUtils.o: Utils/StringUtils.cpp.o
 
 # target to build an object file
 Utils/StringUtils.cpp.o:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Utils/StringUtils.cpp.o
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Utils/StringUtils.cpp.o
 .PHONY : Utils/StringUtils.cpp.o
 
 Utils/StringUtils.i: Utils/StringUtils.cpp.i
@@ -273,7 +300,7 @@ Utils/StringUtils.i: Utils/StringUtils.cpp.i
 
 # target to preprocess a source file
 Utils/StringUtils.cpp.i:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Utils/StringUtils.cpp.i
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Utils/StringUtils.cpp.i
 .PHONY : Utils/StringUtils.cpp.i
 
 Utils/StringUtils.s: Utils/StringUtils.cpp.s
@@ -282,7 +309,7 @@ Utils/StringUtils.s: Utils/StringUtils.cpp.s
 
 # target to generate assembly for a file
 Utils/StringUtils.cpp.s:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/Utils/StringUtils.cpp.s
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/Utils/StringUtils.cpp.s
 .PHONY : Utils/StringUtils.cpp.s
 
 main.o: main.cpp.o
@@ -291,7 +318,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/main.cpp.o
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -300,7 +327,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/main.cpp.i
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -309,7 +336,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/main.cpp.s
+	$(MAKE) -f CMakeFiles/SNMPClient.dir/build.make CMakeFiles/SNMPClient.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -319,7 +346,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... Client"
+	@echo "... SNMPClient"
 	@echo "... edit_cache"
 	@echo "... SNMP/SNMP.o"
 	@echo "... SNMP/SNMP.i"
@@ -336,6 +363,9 @@ help:
 	@echo "... Socket/Socket.o"
 	@echo "... Socket/Socket.i"
 	@echo "... Socket/Socket.s"
+	@echo "... Utils/SNMPMessager.o"
+	@echo "... Utils/SNMPMessager.i"
+	@echo "... Utils/SNMPMessager.s"
 	@echo "... Utils/StringUtils.o"
 	@echo "... Utils/StringUtils.i"
 	@echo "... Utils/StringUtils.s"

@@ -130,7 +130,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Client
+CMAKE_PROJECT_NAME:STATIC=SNMPClient
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -187,6 +187,21 @@ Client_BINARY_DIR:STATIC=/mnt/c/Users/Pichau/Documents/git/smnptest/build
 //Value Computed by CMake
 Client_SOURCE_DIR:STATIC=/mnt/c/Users/Pichau/Documents/git/smnptest
 
+//Path to a file.
+JAVA_AWT_INCLUDE_PATH:PATH=/usr/lib/jvm/java-8-openjdk-amd64/include
+
+//Path to a library.
+JAVA_AWT_LIBRARY:FILEPATH=/usr/lib/jvm/default-java/lib/libjawt.so
+
+//Path to a file.
+JAVA_INCLUDE_PATH:PATH=/usr/lib/jvm/java-8-openjdk-amd64/include
+
+//Path to a file.
+JAVA_INCLUDE_PATH2:PATH=/usr/lib/jvm/java-8-openjdk-amd64/include/linux
+
+//Path to a library.
+JAVA_JVM_LIBRARY:FILEPATH=/usr/lib/jvm/default-java/lib/server/libjvm.so
+
 //CXX compiler flags for OpenMP parallelization
 OpenMP_CXX_FLAGS:STRING=-fopenmp
 
@@ -204,6 +219,15 @@ OpenMP_gomp_LIBRARY:FILEPATH=/usr/lib/gcc/x86_64-linux-gnu/7/libgomp.so
 
 //Path to the pthread library for OpenMP
 OpenMP_pthread_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libpthread.so
+
+//Value Computed by CMake
+SNMPClient_BINARY_DIR:STATIC=/mnt/c/Users/Pichau/Documents/git/smnptest/build
+
+//Dependencies for the target
+SNMPClient_LIB_DEPENDS:STATIC=general;/usr/lib/jvm/default-java/lib/server/libjvm.so;
+
+//Value Computed by CMake
+SNMPClient_SOURCE_DIR:STATIC=/mnt/c/Users/Pichau/Documents/git/smnptest
 
 
 ########################
@@ -345,12 +369,24 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding JNI
+FIND_PACKAGE_MESSAGE_DETAILS_JNI:INTERNAL=[/usr/lib/jvm/default-java/lib/libjawt.so][/usr/lib/jvm/default-java/lib/server/libjvm.so][/usr/lib/jvm/java-8-openjdk-amd64/include][/usr/lib/jvm/java-8-openjdk-amd64/include/linux][/usr/lib/jvm/java-8-openjdk-amd64/include][v()]
 //Details about finding OpenMP
 FIND_PACKAGE_MESSAGE_DETAILS_OpenMP:INTERNAL=[TRUE][TRUE][c ][v()]
 //Details about finding OpenMP_C
 FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_C:INTERNAL=[-fopenmp][/usr/lib/gcc/x86_64-linux-gnu/7/libgomp.so][/usr/lib/x86_64-linux-gnu/libpthread.so][v()]
 //Details about finding OpenMP_CXX
 FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_CXX:INTERNAL=[-fopenmp][/usr/lib/gcc/x86_64-linux-gnu/7/libgomp.so][/usr/lib/x86_64-linux-gnu/libpthread.so][v()]
+//ADVANCED property for variable: JAVA_AWT_INCLUDE_PATH
+JAVA_AWT_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: JAVA_AWT_LIBRARY
+JAVA_AWT_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: JAVA_INCLUDE_PATH
+JAVA_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: JAVA_INCLUDE_PATH2
+JAVA_INCLUDE_PATH2-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: JAVA_JVM_LIBRARY
+JAVA_JVM_LIBRARY-ADVANCED:INTERNAL=1
 //Result of TRY_COMPILE
 OpenMP_COMPILE_RESULT_CXX_fopenmp:INTERNAL=TRUE
 //Result of TRY_COMPILE
