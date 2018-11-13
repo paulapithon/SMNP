@@ -51,7 +51,7 @@ SVarbindList = TypeVarbindList + chr(len(SVarbind)) + SVarbind
 RqID = chr(2) + chr(1) + chr(1)
 Err = chr(2) + chr(1) + chr(0)
 ErrIndex = chr(2) + chr(1) + chr(0)
-
+print len(SVarbindList)
 SPDU = chr(0xa0) + chr(3 + 3 + 3 + len(SVarbindList)) + RqID + Err + ErrIndex + SVarbindList
 
 #Community

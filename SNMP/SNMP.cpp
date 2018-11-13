@@ -91,17 +91,16 @@ std::string SNMP::decode(const SNMPMessageName::SNMPMessage& snmpMessage) const 
 
 
     // PDU
-    sprintf(PDU,"%.2x%s%s%s%s%s",0xa0,addLeadingZeros((9 + (strlen(varBindListTotal)))).c_str(),REQUEST_ID, ERROR,ERROR_INDEX, varBindListTotal);
-
+    sprintf(PDU,"%.2x%s%s%s%s%s",0xa0,addLeadingZeros((9 + ((strlen(varBindListTotal)/2)))).c_str(),REQUEST_ID, ERROR,ERROR_INDEX, varBindListTotal);
+	std::string hexPubOrPri = toHex(pubOrPri);
     // Community
-    sprintf(community,"%.2x%s%s",0x04,addLeadingZeros(toHex(pubOrPri).length() / 2).c_str(), toHex(pubOrPri).c_str());
+    sprintf(community,"%.2x%s%s",0x04,addLeadingZeros(pubOrPri.length()).c_str(), hexPubOrPri.c_str());
 
     // Version
     const char* version = "020100";
 
      // Message
-    sprintf(message, "30%s%s%s%s",addLeadingZeros( 3 + (strlen(community) / 2) + (strlen(PDU) / 2) ).c_str(),
-            version,community, PDU);
+    sprintf(message, "%.2x%s%s%s%s",0x30,addLeadingZeros( 3 + (strlen(community) / 2) + (strlen(PDU) / 2) ).c_str(),version,community, PDU);
     std::string rValue(message);
     return rValue;
 }
@@ -140,7 +139,6 @@ std::string wait(DatagramSocket* ds, SNMP* thisObj){
     DataSocketMutex.unlock();
 	std::string tempVar = acutalSocket->getMessage();
     thisObj->addElem(tempVar);
-	printf("%s\n",tempVar.c_str());
     delete acutalSocket;
 	return tempVar;
 }
@@ -165,15 +163,14 @@ int main(){
     mes.community = "public";
     mes.targetIp = "192.168.15.5";
     mes.targetPort = "161";
-	mes.objectId = ".1.3.6.1.4.1.9148.3.3.1.3.1";
+	mes.objectId = ".1.3.6.1.2.1.1.1.0";
 
 	std::string messfae = s.decode(mes);
     // printf("%s\n",messfae.c_str());
     //printf("%s\n",s.encode(messfae).c_str());
     std::string test = s.sendAndWait(mes.targetIp, 161, s.encode(messfae));
 	
-	printf("%s\n",test.c_str());
-    std::regex reg("[^\\w\\d]+");
+    std::regex reg("[^\\w\\d\\s!-/\\:;]+");
     test = regex_replace(test, reg, "");
 	printf("%s\n",test.c_str());
 	return 0;

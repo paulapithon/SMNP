@@ -33,30 +33,27 @@ const std::string DatagramSocket::getMessage()
 {
     len = 0;
     int bytesreceived;
-    unsigned short readbuffer[2];
+    char readbuffer[300];
 	struct sockaddr_in recvfromaddress;
 	int size = sizeof(struct sockaddr);;
-	//memset((void*) &address, 0, addr_len);
-    do {
-		
-		//addr_len = sizeof(address);
-        printf("sent %d bytes to %s\n",48,inet_ntoa(cliaddr.sin_addr));
-        bytesreceived = recvfrom(this->handler, readbuffer, sizeof(readbuffer), 0, (struct sockaddr *) &recvfromaddress, &size);
-         if(bytesreceived != sizeof(unsigned short) || size != sizeof(struct sockaddr) || readbuffer[0] != (unsigned short) this->cliaddr.sin_port || recvfromaddress.sin_family != this->cliaddr.sin_family || recvfromaddress.sin_port != this->cliaddr.sin_port)
-		
-		printf("server received %d %s bytes\n", bytesreceived,buffer);
-    }while(bytesreceived > 0);
+    bytesreceived = recvfrom(this->handler, readbuffer, sizeof(readbuffer), 0, (struct sockaddr *) &recvfromaddress,(socklen_t *) &size);
+	
 	if (bytesreceived ==0){
-		 printf("Oh dear, something went wrong with read()! %s\n", strerror(errno));
        this->buffer.clear();
 	}
     else if(bytesreceived > 0)
     {
-        this->buffer = std::string(buffer);
+		this->buffer = "";
+		bool result = false;
+		for(int i = 0;i< bytesreceived;i++){
+			if(result && readbuffer[i] != 0x00){
+				this->buffer.push_back(readbuffer[i]);
+			}
+			result |= 0xffffff83 == readbuffer[i];	
+		}
     }
     else
     {
-	  printf("Oh dear, something went wrong with read()! %s\n", strerror(errno));
        this->buffer.clear();
     }
     return this->buffer;
@@ -70,6 +67,5 @@ void DatagramSocket::sendMessage(const char* message, int len)
                       0, /* flags=0: bare−bones use case*/
                       (const struct sockaddr*)&cliaddr, /* the destination */
                       sizeof(cliaddr)); /* size of the destination struct */
-					  printf("%d = %d\n",num_sent,len);
 					  
 }
