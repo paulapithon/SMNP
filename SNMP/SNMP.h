@@ -18,7 +18,7 @@ private:
     std::vector<std::string> snmpAnswerHistory;
 public:
     std::string decode(const SNMPMessageName::SNMPMessage& snmpMessage) const;
-    void sendAndWait(const std::string& ip, int port, const std::string& message);
+    std::string sendAndWait(const std::string& ip, int port, const std::string& message);
     std::string encode(const std::string& snmpMessage) const;
     void addElem(const std::string& message);
 };

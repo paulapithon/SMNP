@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <netdb.h>
+#include <string>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -37,76 +38,65 @@ int main(int argc, char **argv)
 	int optval;		/* flag value for setsockopt */
 	int n;			/* message byte size */
 
-	/* 
-	 * check command line arguments 
-	 */
-	portno = atoi("9090");
+	
+	portno = atoi("161");
 
-	/* 
-	 * socket: create the parent socket 
-	 */
 	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sockfd < 0)
 		error("ERROR opening socket");
 
-	/* setsockopt: Handy debugging trick that lets 
-	 * us rerun the server immediately after we kill it; 
-	 * otherwise we have to wait about 20 secs. 
-	 * Eliminates "ERROR on binding: Address already in use" error. 
-	 */
 	optval = 1;
 	setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR,
 		   (const void *)&optval, sizeof(int));
 
-	/*
-	 * build the server's Internet address
-	 */
 	bzero((char *)&serveraddr, sizeof(serveraddr));
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	serveraddr.sin_port = htons((unsigned short)portno);
 
-	/* 
-	 * bind: associate the parent socket with a port 
-	 */
 	if (bind(sockfd, (struct sockaddr *)&serveraddr,
 		 sizeof(serveraddr)) < 0)
 		error("ERROR on binding");
 
-	/* 
-	 * main loop: wait for a datagram, then echo it
-	 */
+	memset(&clientaddr,0,sizeof(clientaddr));
+	clientaddr.sin_family = AF_INET;
 	clientlen = sizeof(clientaddr);
 	while (1) {
-
-		/*
-		 * recvfrom: receive a UDP datagram from a client
-		 */
 		buf = malloc(BUFSIZE);
 		n = recvfrom(sockfd, buf, BUFSIZE, 0,
 			     (struct sockaddr *)&clientaddr, &clientlen);
 		if (n < 0)
 			error("ERROR in recvfrom");
-
 		/* 
 		 * gethostbyaddr: determine who sent the datagram
 		 */
 		hostp = gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr,
 				      sizeof(clientaddr.sin_addr.s_addr),
 				      AF_INET);
-		if (hostp == NULL)
-			error("ERROR on gethostbyaddr");
+		//if (hostp == NULL)
+		//	error("ERROR on gethostbyaddr");
+
 		hostaddrp = inet_ntoa(clientaddr.sin_addr);
 		if (hostaddrp == NULL)
 			error("ERROR on inet_ntoa\n");
 		printf("server received %d bytes\n %s\n", n, buf);
-
+		for(int i = 0;i < n; i++){
+			printf("%x ", buf[i]);
+			
+		}
+		printf(" \n ");
 		/* 
 		 * sendto: echo the input back to the client 
 		 */
-		n = sendto(sockfd, buf, n, 0,
+		 
+		 const char c[] = {'0', '\x81', '\xad', '\x02', '\x01', '0', '\x04', '\x06', 'p', 'u', 'b', 'l', 'i', 'c', 'H', 'a', 'r', 'd', 'w', 'a', 'r', 'e', ':', ' ', 'I', 'n', 't', 'e', 'l', '6', '4', ' ', 'F', 'a', 'm', 'i', 'l', 'y', ' ', '6', ' ', 'M', 'o', 'd', 'e', 'l', ' ', '1', '5', '8', ' ', 'S', 't', 'e', 'p', 'p', 'i', 'n', 'g', ' ', '1', '0', ' ', 'A', 'T', '/', 'A', 'T', ' ', 'C', 'O', 'M', 'P', 'A', 'T', 'I', 'B', 'L', 'E', ' ', '-', ' ', 'S', 'o', 'f', 't', 'w', 'a', 'r', 'e', ':', ' ', 'W', 'i', 'n', 'd', 'o', 'w', 's', ' ', 'V', 'e', 'r', 's', 'i', 'o', 'n', ' ', '6', '.', '3', ' ', '(', 'B', 'u', 'i', 'l', 'd', ' ', '1', '7', '1', '3', '4', ' ', 'M', 'u', 'l', 't', 'i', 'p', 'r', 'o', 'c', 'e', 's', 's', 'o', 'r', ' ', 'F', 'r', 'e', 'e', ')' };
+		 
+		 std::string s(c);
+		 printf("s.size() %d %s\n",s.size(),c);
+		n = sendto(sockfd, c, s.size(), 0,
 			   (struct sockaddr *)&clientaddr, clientlen);
 		if (n < 0)
 			error("ERROR in sendto");
+		free(buf);
 	}
 }

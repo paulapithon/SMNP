@@ -10,6 +10,7 @@
 #include <thread>
 #include <mutex>
 #include <ctime>
+#include <regex>
 
 #define OID_VALUE "2b"
 #define VAR_BIND_TYPE "30"
@@ -69,7 +70,7 @@ std::string SNMP::decode(const SNMPMessageName::SNMPMessage& snmpMessage) const 
     std::string oidValue = OID_VALUE;
     int oidPartValue;
 
-    for (int i = 1; i < oidParts.size(); i++) {
+    for (int i = 2; i < oidParts.size(); i++) {
         oidPartValue = atoi(oidParts[i].c_str());
         if (oidPartValue > 127) {
             oidValue += getStringComplexOIDPart(oidPartValue);
@@ -83,17 +84,17 @@ std::string SNMP::decode(const SNMPMessageName::SNMPMessage& snmpMessage) const 
     sprintf(oidTotal,"%s%s%s",OID_TYPE,addLeadingZeros(oidLength).c_str(),oidValue.c_str());
 
     // VarBind
-    sprintf(varBindTotal,"%s%s%s%s", VAR_BIND_TYPE , addLeadingZeros((oidLength + 4)).c_str(),oidTotal,VALUE_FIELD);
+    sprintf(varBindTotal,"%s%s%s%s", VAR_BIND_TYPE , addLeadingZeros((oidLength + 2 + 2)).c_str(),oidTotal,VALUE_FIELD);
 
     // VarBindList
     sprintf(varBindListTotal,"%s%s%s", VAR_BIND_LIST_TYPE , addLeadingZeros((strlen(varBindTotal) / 2)).c_str(),varBindTotal);
 
 
     // PDU
-    sprintf(PDU,"a0%s%s%s%s%s",addLeadingZeros((9 + (strlen(varBindListTotal)))).c_str(),REQUEST_ID, ERROR,ERROR_INDEX, varBindListTotal);
+    sprintf(PDU,"%.2x%s%s%s%s%s",0xa0,addLeadingZeros((9 + (strlen(varBindListTotal)))).c_str(),REQUEST_ID, ERROR,ERROR_INDEX, varBindListTotal);
 
     // Community
-    sprintf(community,"04%s%s",addLeadingZeros(toHex(pubOrPri).length() / 2).c_str(), toHex(pubOrPri).c_str());
+    sprintf(community,"%.2x%s%s",0x04,addLeadingZeros(toHex(pubOrPri).length() / 2).c_str(), toHex(pubOrPri).c_str());
 
     // Version
     const char* version = "020100";
@@ -106,65 +107,74 @@ std::string SNMP::decode(const SNMPMessageName::SNMPMessage& snmpMessage) const 
 }
 std::string SNMP::encode(const std::string& snmpMessage) const {
     std::string rValue;
-    char number;
-    char value;
+    int number;
+    int value;
     for (int i = 0; i < snmpMessage.size(); i+=2) {
         value = 0;
-        number = snmpMessage.at(i);
-        if(number >= '0' && number <  '9')
+        number = snmpMessage[i];
+        if(number >= '0' && number <=  '9'){
             number -= '0';
-        else
-            number -= 'a';
-        value += number*16;
-        printf("%d \n",value);
-        number = snmpMessage.at(i+1);
-        if(number >= '0' && number <  '9'){
+        }
+		else
+		{				
+			number -= 'a';
+			number += 10;
+        }
+		value = number * 16;
+        number = snmpMessage[i+1];
+        if(number >= '0' && number <=  '9'){
             number -= '0';
-        }else
+        }
+		else{
             number -= 'a';
+			number += 10;
+        }
         value += number;
-        printf("%d %c",value,value);
+		rValue += ((char)value);
     }
     return rValue;
 }
-void wait(DatagramSocket* ds, SNMP* thisObj){
+std::string wait(DatagramSocket* ds, SNMP* thisObj){
     DataSocketMutex.lock();
     DatagramSocket* acutalSocket = ds;
     DataSocketMutex.unlock();
-    thisObj->addElem(acutalSocket->getMessage());
+	std::string tempVar = acutalSocket->getMessage();
+    thisObj->addElem(tempVar);
+	printf("%s\n",tempVar.c_str());
     delete acutalSocket;
+	return tempVar;
 }
 
 
-void SNMP::sendAndWait(const std::string& ip, int port, const std::string& message){
+std::string SNMP::sendAndWait(const std::string& ip, int port, const std::string& message){
     DataSocketMutex.lock();
     this->ds = new DatagramSocket(ip, port);
     DataSocketMutex.unlock();
-
-    this->ds->sendMessage(message);
-    wait(this->ds,this);
-
+    this->ds->sendMessage(message.c_str(), message.size());
+    std::string rValue = wait(this->ds,this);
+	delete this->ds;
+	return rValue;
 }
 
 
 int main(){
-	const char* teste[] = {"1.3.6.1.4.1.12619.1.1.1"};
-    int count = 0;
+	int count = 0;
     int value = 128 * 128;
     SNMP s;
     SNMPMessageName::SNMPMessage mes;
     mes.community = "public";
-    mes.targetIp = "127.0.0.1";
-    mes.targetPort = "9002";
+    mes.targetIp = "192.168.15.5";
+    mes.targetPort = "161";
+	mes.objectId = ".1.3.6.1.4.1.9148.3.3.1.3.1";
 
-
-	for(int i = 0; i < 17;i++)
-	{
-		mes.objectId = teste[i];//".1.3.6.1.2.1.2.2.1.1.1";
-
-		std::string messfae = s.decode(mes);
-        printf("%s\n",messfae.c_str());
-        printf("%s\n",s.encode(messfae).c_str());
-        s.sendAndWait(mes.targetIp, 9002, messfae);
-	}
+	std::string messfae = s.decode(mes);
+    // printf("%s\n",messfae.c_str());
+    //printf("%s\n",s.encode(messfae).c_str());
+    std::string test = s.sendAndWait(mes.targetIp, 161, s.encode(messfae));
+	
+	printf("%s\n",test.c_str());
+    std::regex reg("[^\\w\\d]+");
+    test = regex_replace(test, reg, "");
+	printf("%s\n",test.c_str());
+	return 0;
 }

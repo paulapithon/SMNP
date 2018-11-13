@@ -21,6 +21,8 @@ const std::string Socket::getMessage(int socket)
     return rValue;
 }
 
+
+
 void Socket::sendMessage(const std::string& message,int socket)
 {
     send(socket , message.c_str(), message.size() , 0 );

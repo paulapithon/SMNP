@@ -1,7 +1,3 @@
-//
-// Created by Pichau on 08/11/2018.
-//
-
 #include "DatagramSocket.h"
 #include <cstring>
 #include <errno.h>
@@ -36,50 +32,44 @@ void DatagramSocket::initialize() {
 const std::string DatagramSocket::getMessage()
 {
     len = 0;
-    int n;
-    char buffer[500];
-
-    fd_set set;
-    struct timeval timeout;
-    FD_ZERO(&set); /* clear the set */
-    FD_SET(this->handler, &set); /* add our file descriptor to the set */
-    timeout.tv_sec = 120;
-    timeout.tv_usec = 0;
-    int rv;
+    int bytesreceived;
+    unsigned short readbuffer[2];
+	struct sockaddr_in recvfromaddress;
+	int size = sizeof(struct sockaddr);;
+	//memset((void*) &address, 0, addr_len);
     do {
-        printf("Hey\n");
-        rv = select(this->handler, &set, NULL, NULL, &timeout);
-        printf("Hey\n");
-        if (rv <= 0) {
-            break;
-        } else {
-            n = recv(this->handler, buffer, 500,
-                         MSG_WAITALL);
-            printf("server received %d bytes\n", n);
-        }
-    }while(n < 0);
-    if(n >= 0)
+		
+		//addr_len = sizeof(address);
+        printf("sent %d bytes to %s\n",48,inet_ntoa(cliaddr.sin_addr));
+        bytesreceived = recvfrom(this->handler, readbuffer, sizeof(readbuffer), 0, (struct sockaddr *) &recvfromaddress, &size);
+         if(bytesreceived != sizeof(unsigned short) || size != sizeof(struct sockaddr) || readbuffer[0] != (unsigned short) this->cliaddr.sin_port || recvfromaddress.sin_family != this->cliaddr.sin_family || recvfromaddress.sin_port != this->cliaddr.sin_port)
+		
+		printf("server received %d %s bytes\n", bytesreceived,buffer);
+    }while(bytesreceived > 0);
+	if (bytesreceived ==0){
+		 printf("Oh dear, something went wrong with read()! %s\n", strerror(errno));
+       this->buffer.clear();
+	}
+    else if(bytesreceived > 0)
     {
-        buffer[n] = '\0';
         this->buffer = std::string(buffer);
-
     }
     else
     {
-        printf("Time up!\n");
+	  printf("Oh dear, something went wrong with read()! %s\n", strerror(errno));
        this->buffer.clear();
     }
     return this->buffer;
 }
 
-void DatagramSocket::sendMessage(const std::string& message)
+void DatagramSocket::sendMessage(const char* message, int len)
 {
-    int num_sent;
-    const char* str =  message.c_str();
-    num_sent = sendto(this->handler, /* socket */
-                      str , /* buffer to send */
-                      strlen(str), /* number of bytes to send */
+    int num_sent = sendto(this->handler, /* socket */
+                      message , /* buffer to send */
+                      len, /* number of bytes to send */
                       0, /* flags=0: bare−bones use case*/
                       (const struct sockaddr*)&cliaddr, /* the destination */
                       sizeof(cliaddr)); /* size of the destination struct */
+					  printf("%d = %d\n",num_sent,len);
+					  
 }

@@ -7,12 +7,13 @@ import struct
 
 c = pysnmp.version
 print c
-Comm = raw_input('Digite a community desejada (default = public): ')
-if not Comm:
-    Comm = 'public'
+#Comm = raw_input('Digite a community desejada (default = public): ')
+#if not Comm:
+Comm = 'public'
 lenComm = len(Comm)
 
-OID = raw_input('Digite o OID desejado: ')
+#OID = raw_input('Digite o OID desejado: ')
+OID = ".1.3.6.1.2.1.1.1.0"
 OID = OID.replace(".", "")
 OID = OID[2:]
 oid = chr(0x2b)
@@ -22,7 +23,7 @@ lenOID = len(oid)
 
 endIP = raw_input('Digite o endereco do alvo: ')
 
-Port = int(raw_input('Digite a porta do alvo (161 ou 9002): '))
+Port = int(raw_input('Digite a porta do alvo (161 ou ): '))
 
 #prepara socket e conecta a interface - sem o 3o. argumento (protocol)
 #nao ha filtragem do tipo de protocolo na recepcao

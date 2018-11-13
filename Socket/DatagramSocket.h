@@ -19,7 +19,7 @@ public:
     DatagramSocket(const std::string& ip,int port,bool server = true);
 
     const std::string getMessage();
-    void sendMessage(const std::string& message);
+    void sendMessage(const char* message, int len);
 
 };
 
